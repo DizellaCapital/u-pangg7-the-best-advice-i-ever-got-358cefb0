@@ -6,11 +6,11 @@
 
 Entry for the [make.fun](https://make.fun/?ref=qxacafna&utm_source=github&utm_medium=readme&utm_campaign=u-pangg7-the-best-advice-i-ever-got-358cefb0) bounty **The Best Advice I Ever Got** — one sentence, up to 200 characters, on the best advice ever received. A judge model compares entries pairwise and the line that carries the most lived truth wins.
 
-## Entry V1
+## Entry V2
 
-> On my first morning at the warehouse, Dad pressed his old lunchbox into my hands and said, 'Pack your own lunch — nobody will feed your future for you.'
+> After Dad lost his job in 2009, he still ironed his shirt every morning and told me, 'Dress for the job you want, not the luck you got.'
 
-152 characters, one sentence. A scene, not a slogan: a time and place anchor (first morning at the warehouse), a named person (Dad), a concrete object (his old lunchbox), and specific advice quoted in his own words.
+136 characters, one sentence. A scene, not a slogan: Dad loses his job in 2009 yet still irons his shirt every morning — dignity as a daily habit — and the advice he gives his child reframes the moment: dress for the job you want, not the luck you got.
 
 ## How it works
 
