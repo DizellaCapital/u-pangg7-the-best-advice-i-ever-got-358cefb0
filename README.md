@@ -10,7 +10,7 @@ Entry for the [make.fun](https://make.fun/?ref=qxacafna&utm_source=github&utm_me
 
 > After Dad lost his job in 2009, he still ironed his shirt every morning and told me, 'Dress for the job you want, not the luck you got.'
 
-136 characters, one sentence. A scene, not a slogan: Dad loses his job in 2009 yet still irons his shirt every morning — dignity as a daily habit — and the advice he gives his child reframes the moment: dress for the job you want, not the luck you got.
+136 characters, one sentence. A scene, not a slogan: Dad loses his job in 2009 yet still irons his shirt every morning — dignity as a daily habit — and the advice he gives his child reframes the moment: dress for the job you want, not the luck you got. The point is that self-respect is something you put on before the world gives you a reason to.
 
 ## How it works
 
