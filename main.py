@@ -1,106 +1,79 @@
 #!/usr/bin/env python3
-"""The Best Advice I Ever Got — V2 revised entry writer.
+"""The Best Advice I Ever Got — V3 entry writer (stdlib only).
 
-Assembles the one-sentence V2 advice line from fragments, runs it through
-a pipeline of small validators, writes it to entry.txt inside the make.fun
-output directory, then reads the file back and aborts when the bytes on
-disk are not exactly the intended line. Standard library only.
+Writes one sentence (149 chars) to $MAKEFUN_OUTPUT_DIR/entry.txt,
+falling back to /output, with no trailing newline. Aborts if the
+on-disk bytes differ from the line.
 """
 
 import os
 import sys
-from pathlib import Path
 
-# Fragments of the entry, joined with single spaces. The line itself is
-# fixed (136 characters, one sentence); splitting it here only keeps the
-# source readable and makes the assembly step explicit.
-ENTRY_PARTS = (
-    "After Dad lost his job in 2009, he still ironed his shirt every",
-    "morning and told me, 'Dress for the job you want, not the luck",
-    "you got.'",
+LINE = (
+    "When Grandpa's hands shook too much to hold his chisel, "
+    "he pressed it into mine and whispered, "
+    "'A steady hand is just a scared hand that kept going.'"
 )
-ENTRY = " ".join(ENTRY_PARTS)
 
-CHAR_LIMIT = 200
-END_MARKS = frozenset(".!?")
-CLOSING_QUOTES = "'\""
-
-
-def die(reason):
-    """Print the failure reason and stop with a non-zero exit code."""
-    sys.stderr.write("entry rejected: " + reason + "\n")
-    raise SystemExit(1)
+MAX_CHARS = 200
+TERMINATORS = ".!?"
+CLOSERS = "'\""
 
 
-def _single_line(line):
-    if "\n" in line or "\r" in line:
-        return "entry spans more than one line"
-    return None
+def sentence_total(text):
+    """Count sentence terminators, ignoring a trailing closing quote.
+
+    A quoted sentence ends with its period before the closing quote,
+    so strip trailing quote chars first, then count terminators.
+    """
+    body = text.rstrip(CLOSERS)
+    return sum(1 for ch in body if ch in TERMINATORS)
 
 
-def _within_limit(line):
-    if len(line) > CHAR_LIMIT:
-        return "entry is %d characters, limit is %d" % (len(line), CHAR_LIMIT)
-    return None
+def assert_single_line(text):
+    if "\n" in text or "\r" in text:
+        raise ValueError("entry must be a single line (no newline characters)")
 
 
-def _not_blank(line):
-    if not isinstance(line, str) or line.strip() == "":
-        return "entry is empty"
-    return None
-
-
-def _no_surrounding_space(line):
+def emit_entry(line):
+    if not isinstance(line, str):
+        raise TypeError("entry must be a string")
+    if line.strip() == "":
+        raise ValueError("entry must not be empty")
     if line != line.strip():
-        return "entry must not start or end with whitespace"
-    return None
+        raise ValueError("entry must not start or end with whitespace")
+    if len(line) > MAX_CHARS:
+        raise ValueError(
+            f"entry is {len(line)} chars, over the {MAX_CHARS}-char limit"
+        )
+    assert_single_line(line)
+    if sentence_total(line) != 1:
+        raise ValueError("entry must be exactly one sentence")
+    if not line.rstrip(CLOSERS).endswith(tuple(TERMINATORS)):
+        raise ValueError("entry must end with a sentence terminator")
 
+    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
+    os.makedirs(out_dir, exist_ok=True)
+    target = os.path.join(out_dir, "entry.txt")
+    with open(target, "w", encoding="utf-8", newline="") as handle:
+        handle.write(line)
 
-def _one_sentence(line):
-    # A trailing quote may follow the final terminator, as in ...got.'
-    body = line
-    while body and body[-1] in CLOSING_QUOTES:
-        body = body[:-1]
-    marks = sum(1 for ch in body if ch in END_MARKS)
-    if marks != 1:
-        return "entry must contain exactly one sentence, found %d end marks" % marks
-    if not body or body[-1] not in END_MARKS:
-        return "entry must end with a sentence terminator"
-    return None
-
-
-# Validators run in this order: line shape first, then size, then content.
-VALIDATORS = (_single_line, _within_limit, _not_blank, _no_surrounding_space, _one_sentence)
-
-
-def validate(line):
-    """Run every validator; stop at the first problem found."""
-    for check in VALIDATORS:
-        problem = check(line)
-        if problem is not None:
-            die(problem)
-
-
-def destination():
-    """Resolve entry.txt under $MAKEFUN_OUTPUT_DIR, defaulting to /output."""
-    root = Path(os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output")
-    return root / "entry.txt"
-
-
-def write_entry(line, target):
-    """Write the line with no trailing newline, then verify the bytes."""
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_bytes(line.encode("utf-8"))
-    if target.read_bytes() != line.encode("utf-8"):
-        die("read-back mismatch: bytes on disk differ from the entry")
+    with open(target, "r", encoding="utf-8", newline="") as handle:
+        on_disk = handle.read()
+    if on_disk != line:
+        raise RuntimeError("read-back mismatch: bytes on disk differ from entry")
     return target
 
 
-def run():
-    validate(ENTRY)
-    target = write_entry(ENTRY, destination())
-    print("wrote %d characters to %s" % (len(ENTRY), target))
+def main():
+    try:
+        target = emit_entry(LINE)
+    except (TypeError, ValueError, RuntimeError, OSError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+    print(f"wrote {len(LINE)} chars to {target}")
+    return 0
 
 
 if __name__ == "__main__":
-    run()
+    sys.exit(main())

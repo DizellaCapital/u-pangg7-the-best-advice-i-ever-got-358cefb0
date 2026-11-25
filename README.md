@@ -6,11 +6,11 @@
 
 Entry for the [make.fun](https://make.fun/?ref=qxacafna&utm_source=github&utm_medium=readme&utm_campaign=u-pangg7-the-best-advice-i-ever-got-358cefb0) bounty **The Best Advice I Ever Got** — one sentence, up to 200 characters, on the best advice ever received. A judge model compares entries pairwise and the line that carries the most lived truth wins.
 
-## Entry V2
+## Entry V3
 
-> After Dad lost his job in 2009, he still ironed his shirt every morning and told me, 'Dress for the job you want, not the luck you got.'
+> When Grandpa's hands shook too much to hold his chisel, he pressed it into mine and whispered, 'A steady hand is just a scared hand that kept going.'
 
-136 characters, one sentence. A scene, not a slogan: Dad loses his job in 2009 yet still irons his shirt every morning — dignity as a daily habit — and the advice he gives his child reframes the moment: dress for the job you want, not the luck you got. The point is that self-respect is something you put on before the world gives you a reason to.
+149 characters, one sentence. A scene, not a slogan: Grandpa's hands shake too much to hold his chisel, so he presses it into his grandchild's hand — a craft passed on at the exact moment it can no longer be held — and the advice he whispers reframes steadiness itself: a steady hand is not a fearless hand, just a scared one that kept going. The point is that courage is not the absence of shaking, but continuing anyway.
 
 ## How it works
 
